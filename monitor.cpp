@@ -58,7 +58,7 @@ int vitalsOk(float temperature, float pulseRate, float spo2) {
     for (size_t i = 0; i < vitals.size(); ++i) {
         check = checkVital(values[i], vitals[i]);
         printAlerts(check, vitals[i]);
-        retVal| = check;
+        retVal |= check;
     }
     return retVal;
 }
