@@ -16,25 +16,22 @@ using std::chrono::seconds;
 struct Vital {
     int min;
     int max;
-    enum CheckType { RANGE, MINIMUM } checkType;
+    bool (*CheckFunc)(int, Vital*);
     string alertMessage;
 };
 
  vector<Vital> vitals = {
-        {95, 102, Vital::RANGE, "Temperature is critical!"},
-        {60, 100, Vital::RANGE, "Pulse Rate is out of range!"},
-        {90, 100, Vital::MINIMUM, "Oxygen Saturation out of range!"}
+    {95, 102, vitalRangeCheck,     "Temperature is critical!"},
+    {60, 100, vitalRangeCheck,     "Pulse Rate is out of range!"},
+    {90, 100, vitalMinCheck,  "Oxygen Saturation out of range!"}
 };
 
-bool checkVital(int val, const Vital& v) {
-    switch (v.checkType) {
-        case Vital::RANGE:
-            return (val < v.min || val > v.max);
-        case Vital::MINIMUM:
-            return (val < v.min);
-        default:
-            return false;
-    }
+bool vitalRangeCheck(int val, vital* v) {
+    return val < v.min || val > v.max;
+}
+bool vitalMinCheck(int val, Vital * v)
+{ 
+    return (val< v->min);
 }
 
 void printWarningAnimation() {
@@ -58,7 +55,7 @@ int vitalsOk(float temperature, float pulseRate, float spo2) {
     int retVal = 0;
     bool check;
     for (size_t i = 0; i < vitals.size(); ++i) {
-        check = checkVital(values[i], vitals[i]);
+        check = vitals[i].CheckFunc(values[i], &vitals[i]);
         printAlerts(check, vitals[i]);
         retVal |= check;
     }
