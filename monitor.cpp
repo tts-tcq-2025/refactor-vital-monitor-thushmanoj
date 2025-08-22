@@ -28,9 +28,9 @@ bool vitalMinCheck(float val, const Vital* v) {
 }
 
 vector<Vital> vitals = {
-{95, 102, (bool (*)(float, Vital*))vitalRangeCheck, "Temperature is critical!"},
-{60, 100, (bool (*)(float, Vital*))vitalRangeCheck, "Pulse Rate is out of range!"},
-{90, 100, (bool (*)(float, Vital*))vitalMinCheck, "Oxygen Saturation out of range!"}
+{95, 102, vitalRangeCheck, "Temperature is critical!"},
+{60, 100, vitalRangeCheck, "Pulse Rate is out of range!"},
+{90, 100, vitalMinCheck, "Oxygen Saturation out of range!"}
 };
 
 void printWarningAnimation() {
@@ -52,9 +52,8 @@ void printAlerts(bool check, const Vital& v) {
 int vitalsOk(float temperature, float pulseRate, float spo2) {
     vector<float> values = {temperature, pulseRate, spo2};
     int retVal = 1;
-    bool check;
     for (size_t i = 0; i < vitals.size(); ++i) {
-        check = vitals[i].CheckFunc(values[i], &vitals[i]);
+        bool check = vitals[i].CheckFunc(values[i], &vitals[i]);
         printAlerts(check, vitals[i]);
         retVal &= (!check);
     }
