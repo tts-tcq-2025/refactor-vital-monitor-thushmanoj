@@ -1,3 +1,5 @@
+#include "./monitor.h"
+#include <assert.h>
 #include <iostream>
 #include <string>
 #include <vector>
