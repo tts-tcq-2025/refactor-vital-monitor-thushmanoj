@@ -23,7 +23,7 @@ struct Vital {
 bool vitalRangeCheck(float val, Vital* v) {
     return (val < v->min || val > v->max);
 }
-bool vitalMinCheck(float val, Vital * v){
+bool vitalMinCheck(float val, Vital* v) {
     return (val< v->min);
 }
 
